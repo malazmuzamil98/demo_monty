@@ -1,43 +1,11 @@
 #include "monty.h"
-
-void handle_line(char *read_lines, unsigned int line_number, stack_t **stack)
-{
-	int i = 0;
-	char *line_tokens[SIZE];
-	int numOf_tokens = 0;
-	char *token = strtok(read_lines, " \t\n");
-	instruction_t instructions[] = {
-		{"push", push_handle},
-		{"pall", pall_handle},
-		{"pint", pint_handle},
-		{NULL, NULL}
-	};
-
-	if (token != NULL && numOf_tokens < SIZE)
-	{
-		line_tokens[numOf_tokens] = token;
-		numOf_tokens++;
-		token = strtok(NULL, " \t\n");
-	}
-	if (numOf_tokens == 0)
-	{
-		return;
-	}
-	/*while (numOf_tokens != 0)
-	{
-		printf("Line %u: Opcode: %s\n", line_number, line_tokens[i]);
-		i++;
-		numOf_tokens--;
-	}*/
-	for (; instructions[i].opcode != NULL; i++)
-	{
-		if (strcmp())
-		instructions[i].f()
-		break;
-	}
-}
-
-int main (int ac, char *av[])
+/**
+ * main - intry point
+ * @ac: number of  arguments
+ * @av: arguments
+ * Return: zero
+*/
+int main(int ac, char *av[])
 {
 	FILE *fd;
 	unsigned int line_number = 1;
@@ -51,7 +19,7 @@ int main (int ac, char *av[])
 		exit(EXIT_FAILURE);
 	}
 	fd = fopen(av[1], "r");
-	if (fd == NULL)
+	if (fd == NULL || av[1] == NULL)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", av[1]);
 		exit(EXIT_FAILURE);
@@ -61,13 +29,13 @@ int main (int ac, char *av[])
 		handle_line(read_lines, line_number, &stack);
 		line_number++;
 	}
-	free (read_lines);
-	fclose(fd);
+	free(read_lines);
 	while (stack != NULL)
-    {
-        temp = stack;
-        stack = stack->next;
-        free(temp);
-    }
+	{
+		temp = stack;
+		stack = stack->next;
+		free(temp);
+	}
+	fclose(fd);
 	return (0);
 }
